@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Official Experiment</title>
+    <style>
+  #jspsych-content {
+    display: block !important;
+    margin-top: 80px; /* adjust as needed */
+    transform: none !important;
+    top: auto !important;
+    position: static !important;
+  }
+    </style>
+    <script src="https://unpkg.com/jspsych@8.2.1"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-html-form@2.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-preload@2.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@2.1.0"></script>
+    <link href="https://unpkg.com/jspsych@8.2.1/css/jspsych.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body></body>
+  
+  <script>
+    const jsPsych = initJsPsych();
+    const timeline = [];
+
+//Define Groups
+const groups = ['NPT/MoL/TD', 'NPT/MoL/N', 'NPT/C/TD', 'NPT/C/N', 'PT/MoL', 'PT/C'];
+let assignedGroup = jsPsych.data.getURLVariable('group');
+console.log("Assigned group:", assignedGroup);
+    
+    const session2_welcome_page = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; font-size: 20px; text-align: center; line-height: 1.6; padding: 0 40px;">
+      <p><strong>Welcome to Session 2</strong></p>
+      <p>Thank you for returning to complete the second part of this online task.</p>
+
+    </div>
+  `,
+  choices: ['Continue'],
+};
+
+
+// Group Timelines
+if (assignedGroup === 'NPT/MoL/TD') {
+    timeline.push(session2_welcome_page)
+};
+if (assignedGroup === 'NPT/MoL/N') {
+    
+};
+if (assignedGroup === 'NPT/C/TD') {
+    
+};
+if (assignedGroup === 'NPT/C/N') {
+    
+};
+if (assignedGroup === 'PT/MoL') {
+    
+};
+
+if (assignedGroup === 'PT/C') {
+
+};
+    
+// Start the experiment
+  jsPsych.run(timeline);
+
+  </script>
+</html>
