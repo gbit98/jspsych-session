@@ -40,26 +40,6 @@ console.log("Assigned group:", assignedGroup);
 jsPsych.data.addProperties({ group: assignedGroup });
 
 
-const delayed_button_page = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <div style="max-width: 800px; margin: auto; font-size: 18px;">
-      <p>This is an instructional page that must be read before continuing.</p>
-    </div>
-  `,
-  choices: ['Continue'],
-   button_html: '<button class="jspsych-btn" id="continue-btn" disabled>%choice%</button>',
-  on_load: function() {
-    // Wait 5 seconds, then enable the button
-    setTimeout(() => {
-      const button = document.getElementById('continue-btn');
-      if (button) {
-        button.disabled = false;
-      }
-    }, 5000);
-  }
-};
-
 //Welcome Page
 const welcome_page = {
   type: jsPsychHtmlKeyboardResponse,
@@ -856,7 +836,6 @@ const download_data_screen = {
 
 //PT/MoL/TD
 if (assignedGroup === 'NPT/MoL/TD') {
-timeline.push(delayed_button_page);
 timeline.push(welcome_page);
 timeline.push(email_loop);
 timeline.push(download_data_screen);
