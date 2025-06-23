@@ -31,8 +31,8 @@
     timeline.push(preload);
 
 //Define Groups
-const groups = ['TD/N', 'N/TD', 'Test'];
-const assignedGroup = 'Test'
+const groups = ['TD/N', 'N/TD'];
+const assignedGroup = jsPsych.randomization.sampleWithoutReplacement(groups, 1)[0];
 console.log("Assigned group:", assignedGroup);
 
 
@@ -1078,10 +1078,6 @@ const distractorPage2 = generateMathDistractorPage(2, distractorProblems2);
 const distractorPage3 = generateMathDistractorPage(3, distractorProblems3);
 const distractorPage4 = generateMathDistractorPage(4, distractorProblems4);
 
-
-if (assignedGroup === 'Test') {
-timeline.push(instructionsLooping)
-}
 
 if (assignedGroup === 'TD/N') {
 timeline.push(welcome_page);
