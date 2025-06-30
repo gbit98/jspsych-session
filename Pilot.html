@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Pilot Test</title>
+    <title>Official Experiment</title>
     <style>
   #jspsych-content {
     display: block !important;
@@ -26,7 +26,7 @@
     const timeline = [];
     const preload = {
       type: jsPsychPreload,
-      images: ['Diagram1.png', 'Diagram2.png']
+      images: ['Diagram1.png', 'Diagram2.png', 'Diagram3.png', 'Diagram4.png']
     };
     timeline.push(preload);
 
@@ -717,46 +717,107 @@ stimulus: `
   `
 },
 
-// Memory Palace Creation 2
-
-{
-stimulus: `
-<div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
-      
-      <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
-      <strong>Step 2: Plan a Clear Route</strong>
-      </div>
-
-      <ul style="margin-left: 20px;">
-        <li style="margin-bottom: 16px;">
-          Imagine walking through this setting from a clear starting point 
-          (for example, entering through the front door of your home).
-        </li>
-
-        <li style="margin-bottom: 16px;">
-          Visualise moving step by step through the space, noticing around 15 distinctive objects or 
-          locations along the way.
-
-          <ul style="margin-left: 20px; list-style-type: circle;">
-            <li>Example items could include a front door, hallway mirror, couch, fridge, desk, etc.</li>
-          </ul>
-        </li>
-
-        <li style="margin-bottom: 16px;">Take approximately 2 minutes to do this now. Feel free to close
-            your eyes if you prefer.</li>
-      </ul>
-
-
-      <div style="text-align: center; margin-top: 100px;">
-        <em>Press → to continue or ← to go back.</em>
-      </div>
-      
-    </div>
-  `
-  
-}
 ];
 
+// Memory Palace Creation 2
+
+
+const step_2a = {
+type: jsPsychHtmlKeyboardResponse,
+stimulus: `
+<div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+  
+  <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+    <strong>Step 2: Plan a Clear Route</strong>
+  </div>
+
+  <ul style="margin-left: 20px;">
+    <li style="margin-bottom: 16px;">
+      Imagine walking through this setting from a clear starting point 
+      (for example, entering through the front door of your home).
+    </li>
+
+    <li style="margin-bottom: 16px;">
+      Visualise moving step by step through the space, noticing around 15 distinctive objects or 
+      locations along the way.
+
+      <ul style="margin-left: 20px; list-style-type: circle;">
+        <li>Example items could include a front door, hallway mirror, couch, fridge, desk, etc.</li>
+      </ul>
+    </li>
+
+    <li style="margin-bottom: 16px;">
+      It is essential to structure your memory route as a clear, sequential path through the environment, rather than a disconnected collection of items scattered throughout the space. 
+      
+      <ul style="margin-left: 20px; list-style-type: circle;">
+        <li> The more orderly and logical the route, the easier it will be to recall each locus as you learn and recall information. </li>
+      </ul>
+    </li>
+
+      <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px;">
+        <img src="Diagram3.png" style="width: 100%;" />
+        
+      </div>
+
+    <li style="margin-bottom: 16px; margin-top: 40px;">
+      <em>Take approximately 2 minutes to do this now. Feel free to close your eyes if you prefer.</em>
+      </li>
+  </ul>
+
+
+</div>
+`,
+  choices: "NO_KEYS",
+  trial_duration: 120000
+  };
+
+const step_2b = {
+type: jsPsychHtmlKeyboardResponse,
+stimulus: `
+<div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+  
+  <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+    <strong>Step 2: Plan a Clear Route</strong>
+  </div>
+
+  <ul style="margin-left: 20px;">
+    <li style="margin-bottom: 16px;">
+      Imagine walking through this setting from a clear starting point 
+      (for example, entering through the front door of your home).
+    </li>
+
+    <li style="margin-bottom: 16px;">
+      Visualise moving step by step through the space, noticing around 15 distinctive objects or 
+      locations along the way.
+
+      <ul style="margin-left: 20px; list-style-type: circle;">
+        <li>Example items could include a front door, hallway mirror, couch, fridge, desk, etc.</li>
+      </ul>
+    </li>
+
+    <li style="margin-bottom: 16px;">
+      It is essential to structure your memory route as a clear, sequential path through the environment, rather than a disconnected collection of items scattered throughout the space. 
+      
+      <ul style="margin-left: 20px; list-style-type: circle;">
+        <li> The more orderly and logical the route, the easier it will be to recall each locus as you learn and recall information. </li>
+      </ul>
+    </li>
+
+      <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px;">
+        <img src="Diagram3.png" style="width: 100%;" />
+        
+      </div>
+
+    <li style="margin-bottom: 16px; margin-top: 40px;">
+      <em>Take approximately 2 minutes to do this now. Feel free to close your eyes if you prefer.</em>
+      </li>
+  </ul>
+<div style="text-align: center; margin-top: 100px;">
+    <em>Press any button to continue.</em>
+  </div>
+</div>
+`
+};
 
 const memoryLociForm = {
   type: jsPsychSurveyHtmlForm,
@@ -1208,6 +1269,8 @@ timeline.push(...word_trials);
 timeline.push(distractorPage2);
 timeline.push(nouns_recall_pre);
 timeline.push(instructionsLooping);
+timeline.push(step_2a);
+timeline.push(step_2b);
 timeline.push(memoryLociForm);
 timeline.push(step4_rehearsala);
 timeline.push(step4_rehearsalb);
@@ -1243,6 +1306,8 @@ timeline.push(...generateTaskTrials(task_phase1_items, 'phase1'));
 timeline.push(distractorPage2);
 timeline.push(generateRecallPage(task_phase1_items, 'phase1'));
 timeline.push(instructionsLooping);
+timeline.push(step_2a);
+timeline.push(step_2b);
 timeline.push(memoryLociForm);
 timeline.push(step4_rehearsala);
 timeline.push(step4_rehearsalb);
