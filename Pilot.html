@@ -34,7 +34,7 @@
     timeline.push(preload);
 
 //Define Groups
-const groups = ['TD/N', 'N/TD', 'Test'];
+const groups = ['TD/N', 'N/TD'];
 const assignedGroup = 'Test'; // jsPsych.randomization.sampleWithoutReplacement(groups, 1)[0];
 console.log("Assigned group:", assignedGroup);
 
@@ -263,11 +263,11 @@ const word_presentation_info_page1b = {
 
 const all_nouns1 = [
 
-  "string", "mantle", "centennial", "derelict", "coffee", "blacksmith", "comedy", "stub", "nephew", "mast",
-  "grandmother", "scarlet", "majority", "macaroni", "sonata", "headlight", "pianist", "bagpipe", "workhouse", "gem",
-  "steamer", "domicile", "profile", "gymnastics", "bowl", "prairie", "sovereign", "hardwood", "elephant", "lobster",
-  "warmth", "fatigue", "butterfly", "nun", "lark", "nectar", "steam", "marriage", "trumpet", "piston",
-  "cobblestone", "originator", "anecdote", "lecture", "orchestra"
+  "String", "Mantle", "Centennial", "Derelict", "Coffee", "Blacksmith", "Comedy", "Stub", "Nephew", "Mast",
+  "Grandmother", "Scarlet", "Majority", "Macaroni", "Sonata", "Headlight", "Pianist", "Bagpipe", "Workhouse", "Gem",
+  "Steamer", "Domicile", "Profile", "Gymnastics", "Bowl", "Prairie", "Sovereign", "Hardwood", "Elephant", "Lobster",
+  "Warmth", "Fatigue", "Butterfly", "Nun", "Lark", "Nectar", "Steam", "Marriage", "Trumpet", "Piston",
+  "Cobblestone", "Originator", "Anecdote", "Lecture", "Orchestra"
 
 ];
 
@@ -1382,11 +1382,11 @@ const word_presentation_info_page2b = {
 
 // Define nouns
 const all_nouns_2 = [
-  "background", "velocity", "author", "daffodil", "pole", "hospital", "cattle", "candy", "basement", "emergency",
-  "hotel", "science", "decoration", "coin", "edition", "leggings", "brute", "habitation", "weapon", "hostage",
-  "serf", "thistledown", "garret", "citation", "friction", "pepper", "geese", "nutmeg", "oxygen", "appearance",
-  "creature", "student", "engagement", "slave", "glacier", "flexibility", "avenue", "painter", "rattle", "limb",
-  "conquest", "bandit", "meadow", "mirage", "tobacco"
+ "Background", "Velocity", "Author", "Daffodil", "Pole", "Hospital", "Cattle", "Candy", "Basement", "Emergency",
+  "Hotel", "Science", "Decoration", "Coin", "Edition", "Leggings", "Brute", "Habitation", "Weapon", "Hostage",
+  "Serf", "Thistledown", "Garret", "Citation", "Friction", "Pepper", "Geese", "Nutmeg", "Oxygen", "Appearance",
+  "Creature", "Student", "Engagement", "Slave", "Glacier", "Flexibility", "Avenue", "Painter", "Rattle", "Limb",
+  "Conquest", "Bandit", "Meadow", "Mirage", "Tobacco"
 ];
 
 
@@ -1743,7 +1743,7 @@ timeline.push(ToDo_presentation_info_page1b);
 timeline.push(red_dot_start);
 timeline.push(task_trials_pre);
 timeline.push(Distractor2);
-timeline.push(generateRecallPage(task_phase1_items, 'phase1'));
+timeline.push(todo_recall_page_pre);
 timeline.push(post_baseline_test);
 timeline.push(instruction_page_1a);
 timeline.push(instruction_page_1b);
