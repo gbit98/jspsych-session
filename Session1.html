@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Session 1</title>
+    <style>
+  #jspsych-content {
+    display: block !important;
+    margin-top: 80px; /* adjust as needed */
+    transform: none !important;
+    top: auto !important;
+    position: static !important;
+  }
+    </style>
+    <script src="https://unpkg.com/jspsych@8.2.1"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-html-form@2.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-preload@2.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@2.1.0"></script>
+    <link href="https://unpkg.com/jspsych@8.2.1/css/jspsych.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body></body>
+  
+  <script>
+const jsPsych = initJsPsych({
+  show_progress_bar: true,
+});
+
+
+    const timeline = [];
+    const preload = {
+      type: jsPsychPreload,
+      images: ['img/Diagram1.png', 'img/Diagram2.png', 'img/Diagram3.png', `img/Set1B.png`, `img/Set1I.png`
+        , `img/Set2B.png`, 'img/Set2I.png'],
+    };
+    timeline.push(preload);
+
+//Allocate Unique Participant ID
+const participant_id = jsPsych.randomization.randomID(8);
+jsPsych.data.addProperties({ participant_id: participant_id });
+
+//Define Groups
+const groups = ['NPT/MoL/TD', 'NPT/MoL/N', 'NPT/C/TD', 'NPT/C/N', 'PT/MoL', 'PT/C', 'Test'];
+const assignedGroup = 'Test';
+console.log("Assigned group:", assignedGroup);
+
+
+// Store group in data
+jsPsych.data.addProperties({ group: assignedGroup });
+
+const session2_url = `https://psych.research.uts.edu.au/publix/QSHvhLqwSf3?participant_id=${participant_id}&group=${assignedGroup}`;
+
+
+// Store it in the data
+jsPsych.data.addProperties({ session2_url: session2_url });
+
+const Distractor1 = {
+  type: jsPsychSurveyHtmlForm,
+  preamble: `
+    <div style="max-width: 900px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      <p><strong>You will now complete a brief visual task.</strong></p>
+      <p>Below, you can see six individual blue shapes, each numbered from 1 to 6. Above these shapes, there are five boxes labelled A to E, each containing a different group of blue shapes.</p>
+      <p>Your task is to carefully examine each numbered shape and identify which boxes (A, B, C, D, and/or E) contain that same shape.</p>
+      <p>For each shape (1 to 6), list the letter/s of the boxes where that shape appears.</p>
+      <p>The page will automatically submit after 60 seconds.</p>
+    </div>
+    <div style="text-align: center; margin: 30px 0;">
+      <img src="img/Set1B.png" style="max-width: 40%; margin-bottom: 20px;"><br>
+      <img src="img/Set1I.png" style="max-width: 50%;">
+    </div>
+  `,
+  html: `
+    <div style="max-width: 600px; margin: auto;">
+      ${[...Array(6)].map((_, i) =>
+        `<p>${i + 1}. <input name="shape_${i + 1}" type="text" style="width: 200px;"></p>`
+      ).join('')}
+    </div>
+  `,
+ // Hide button visually
+ button_label: "",
+  on_load: function () {
+     // Prevent Enter key from submitting the form
+  document.querySelector('form').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // stops form submission
+    }
+  });
+    // Automatically submit after 60 seconds
+    setTimeout(() => {
+      const form = document.querySelector('form');
+      if (form) form.requestSubmit();
+    }, 60000);
+  }
+};
+
+const Distractor2 = {
+  type: jsPsychSurveyHtmlForm,
+  preamble: `
+    <div style="max-width: 900px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      <p><strong>You will now complete a brief visual task.</strong></p>
+      <p>Below, you can see six individual blue shapes, each numbered from 1 to 6. Above these shapes, there are five boxes labelled A to E, each containing a different group of blue shapes.</p>
+      <p>Your task is to carefully examine each numbered shape and identify which boxes (A, B, C, D, and/or E) contain that same shape.</p>
+      <p>For each shape (1 to 6), list the letter/s of the boxes where that shape appears.</p>
+      <p>The page will automatically submit after 60 seconds.</p>
+    </div>
+    <div style="text-align: center; margin: 30px 0;">
+      <img src="img/Set2B.png" style="max-width: 40%; margin-bottom: 20px;"><br>
+      <img src="img/Set2I.png" style="max-width: 50%;">
+    </div>
+  `,
+  html: `
+    <div style="max-width: 600px; margin: auto;">
+      ${[...Array(6)].map((_, i) =>
+        `<p>${i + 1}. <input name="shape_${i + 1}" type="text" style="width: 200px;"></p>`
+      ).join('')}
+    </div>
+  `,
+ // Hide button visually
+  button_label: "",
+  on_load: function () {
+     // Prevent Enter key from submitting the form
+  document.querySelector('form').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // stops form submission
+    }
+  });
+    // Automatically submit after 60 seconds
+    setTimeout(() => {
+      const form = document.querySelector('form');
+      if (form) form.requestSubmit();
+    }, 60000);
+  }
+};
+
+
+//Welcome Page
+const welcome_pagea = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `
+    <div style="max-width: 800px; margin: 80px auto 0 auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      
+      <p>Welcome to the first of two online sessions in this research study. Thank you for participating!</p>
+
+      <p>Before you begin, please confirm that you understand and agree to the following guidelines:</p>
+
+      <ul style="margin-left: 20px;">
+        <li>You are completing the task on a computer with a keyboard, not a mobile phone or tablet.</li>
+        <li>You are in a quiet environment with uninterrupted internet access, and expect to be free from distractions.</li>
+        <li>Your mobile phone is out of sight and will not be used unless absolutely necessary.</li>
+        <li>This task involves memory-based activities. Please do not take notes, photos, or screenshots of any materials.</li>
+        <li>You will not refresh the page at any time during the task.</li>
+      </ul>
+
+      <p>If any part of the task feels challenging, that’s completely normal—there’s no need for concern. Just give it your best effort.</p>
+
+    </div>
+  `,
+  choices: "NO_KEYS",
+  trial_duration: 13000
+};
+
+
+const welcome_pageb = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `
+    <div style="max-width: 800px; margin: 80px auto 0 auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      
+      <p>Welcome to the first of two online sessions in this research study. Thank you for participating!</p>
+
+      <p>Before you begin, please confirm that you understand and agree to the following guidelines:</p>
+
+      <ul style="margin-left: 20px;">
+        <li>You are completing the task on a computer with a keyboard, not a mobile phone or tablet.</li>
+        <li>You are in a quiet environment with uninterrupted internet access, and expect to be free from distractions.</li>
+        <li>Your mobile phone is out of sight and will not be used unless absolutely necessary.</li>
+        <li>This task involves memory-based activities. Please do not take notes, photos, or screenshots of any materials.</li>
+        <li>You will not refresh the page at any time during the task.</li>
+      </ul>
+
+      <p>If any part of the task feels challenging, that’s completely normal—there’s no need for concern. Just give it your best effort.</p>
+
+      <p style="margin-top: 40px;"><em>Press any key when you're ready to begin.</em></p>
+    </div>
+  `,
+};
+
+
+
+//Word Presentation Info Page
+
+const word_presentation_info_pagea = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `
+<div style="text-align: left; font-size: 18px; line-height: 1.8;">
+  <div style="max-width: 800px;">
+
+        <p>In the upcoming task, you will see 15 words, shown one at a time, on your screen.</p>
+
+        <p>Please read each word carefully and try to remember as many as you can. Each word will appear for 6.5 seconds before moving to the next one.</p>
+
+        <p>Once all 15 words have been shown, you will complete a brief image comparison task, before being taken to a new screen where you will type in as many of the words as you can remember.</p>
+
+        <p>You will have 100 seconds to complete the recall task. You can list the words in any order. If you can’t remember all the words, don’t worry — just give your best guess.</p>
+
+      </div>
+    </div>
+  `
+    ,
+  choices: "NO_KEYS",
+  trial_duration: 10000
+  };
+
+const word_presentation_info_pageb = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+  <div style="text-align: left; font-size: 18px; line-height: 1.8;">
+  <div style="max-width: 800px;">
+
+        <p>In the upcoming task, you will see 15 words, shown one at a time, on your screen.</p>
+
+        <p>Please read each word carefully and try to remember as many as you can. Each word will appear for 6.5 seconds before moving to the next one.</p>
+
+        <p>Once all 15 words have been shown, you will complete a brief image comparison task, before being taken to a new screen where you will type in as many of the words as you can remember.</p>
+
+        <p>You will have 100 seconds to complete the recall task. You can list the words in any order. If you can’t remember all the words, don’t worry — just give your best guess.</p>
+
+        <p style="margin-top: 40px;"><em>When you're ready to begin, click "Proceed".</em></p>
+
+       
+    </div>
+  `,
+  choices: ["Proceed"]
+};
+
+const wordList1 = [
+    "String", "Mantle", "Centennial", "Derelict", "Coffee",
+  "Blacksmith", "Comedy", "Stub", "Nephew", "Mast",
+  "Grandmother", "Scarlet", "Majority", "Macaroni", "Sonata"
+];
+
+const wordList2 = [
+   "Warmth", "Fatigue", "Butterfly", "Nun", "Lark",
+  "Nectar", "Steam", "Marriage", "Trumpet", "Piston",
+  "Cobblestone", "Originator", "Anecdote", "Lecture", "Orchestra"
+];
+
+const wordList3 = [
+   "Background", "Velocity", "Author", "Daffodil", "Pole",
+  "Hospital", "Cattle", "Candy", "Basement", "Emergency",
+  "Hotel", "Science", "Decoration", "Coin", "Edition"
+];
+
+const wordList4 = [
+    "Headlight", "Pianist", "Bagpipe", "Workhouse", "Gem",
+  "Steamer", "Domicile", "Profile", "Gymnastics", "Bowl",
+  "Prairie", "Sovereign", "Hardwood", "Elephant", "Lobster"
+];
+
+const wordList5 = [
+  "Leggings", "Brute", "Habitation", "Weapon", "Hostage",
+  "Serf", "Thistledown", "Garret", "Citation", "Friction",
+  "Pepper", "Geese", "Nutmeg", "Oxygen", "Appearance"
+];
+
+// Step 2: Randomly select one of the three lists
+const allWordLists = [wordList1, wordList2, wordList3, wordList4, wordList5];
+const selectedWordList = jsPsych.randomization.sampleWithoutReplacement(allWordLists, 1)[0];
+
+// Step 3: Shuffle the selected list
+const shuffledWords = jsPsych.randomization.shuffle(selectedWordList);
+
+// Step 4: Store in data for scoring later
+jsPsych.data.addProperties({ presented_words: shuffledWords });
+
+const word_trials = [];
+
+// Start with a red dot for 1.5s
+const red_dot_start = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus:`
+  <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div style="font-size: 48px; color: red;">•</div>
+  </div>
+`,
+  choices: "NO_KEYS",
+  trial_duration: 1500
+};
+
+shuffledWords.forEach((word, index) => {
+  word_trials.push({
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+      <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <div style="font-size: 32px; color: black;">${word}</div>
+      </div>
+    `,
+    choices: "NO_KEYS",
+    trial_duration: 6500
+  });
+
+  if (index < shuffledWords.length - 1) {
+    word_trials.push({
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+          <div style="font-size: 48px; color: red;">•</div>
+        </div>
+      `,
+      choices: "NO_KEYS",
+      trial_duration: 500
+    });
+  }
+});
+
+// Baseline Noun Recall
+const recall_words_trial = {
+  type: jsPsychSurveyHtmlForm,
+  preamble: `
+    <div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      <p><strong>Recall Task</strong></p>
+      <p>Please type in as many of the 15 words you just saw as you can remember. You can list them in any order.</p>
+      <p>For any items you can't remember, you can leave the corresponding box/s blank.</p>
+      <p> You have 100 seconds to complete this task.</p>
+    </div>
+  `,
+  html: `
+    ${[...Array(15)].map((_, i) =>
+      `<p>${i + 1}. <input name="recall${i + 1}" type="text" style="width: 400px;"></p>`
+    ).join("")}
+  `,
+  button_label: "Submit",
+
+  on_load: function() {
+  // Prevent Enter key from submitting the form
+  document.querySelector('form').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // stops form submission
+    }
+  });
+
+  // Auto-submit after 100 seconds
+  setTimeout(() => {
+    const submitButton = document.querySelector('form button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
+    document.querySelector('form').requestSubmit();
+  }, 100000);
+},
+
+  // Record number of correct responses
+on_finish: function(data) {
+  const word_recallResponses = Object.values(data.response).map(r => r.trim().toLowerCase());
+
+  // Find the most recent trial that added 'presented_words'
+  const nouns_presented = jsPsych.data.get().values().find(d => d.presented_words)?.presented_words.map(w => w.toLowerCase());
+
+  const num_correct = word_recallResponses.filter(r => nouns_presented.includes(r)).length;
+
+  jsPsych.data.addProperties({ 
+    nouns_recall_responses: data.response,
+    nouns_recall_correct: num_correct});
+}
+
+};
+
+
+//Well Done Page
+const well_done_page = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center;">
+      <div style="font-size: 24px;">
+        <p><strong>Well done!</strong></p>
+        <p style="margin-top: 40px;"><em>Press any key to continue to the next task.</em></p>
+      </div>
+    </div>
+  `,
+};
+
+
+//ToDo Presentation Info Page
+
+const ToDo_presentation_info_pagea = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `
+    <div style="text-align: left; font-size: 18px; line-height: 1.8;">
+  <div style="max-width: 800px;">
+
+
+        <p>In the upcoming task, you will see 15 phrases, shown one at a time on your screen, describing a brief everyday task.</p>
+         
+        <p>Please read each item carefully and try to remember as many as you can. Each item will appear for 10 seconds before moving to the next one.</p>
+
+        <p>Once all items have been shown, you will complete a brief image comparison task, before being taken to a new screen where you will type in as many of the items as you can remember.</p>
+
+        <p>You will have 150 seconds to complete the recall task. You can list the items in any order. If you can’t remember all the items, don’t worry — just give your best guess.</p>
+
+
+      </div>
+    </div>
+  `
+,
+  choices: "NO_KEYS",
+  trial_duration: 10000
+};
+
+const ToDo_presentation_info_pageb = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="text-align: left; font-size: 18px; line-height: 1.8;">
+  <div style="max-width: 800px;">
+
+
+        <p>In the upcoming task, you will see 15 phrases, shown one at a time on your screen, describing a brief everyday task.</p>
+         
+        <p>Please read each item carefully and try to remember as many as you can. Each item will appear for 10 seconds before moving to the next one.</p>
+
+        <p>Once all items have been shown, you will complete a brief image comparison task, before being taken to a new screen where you will type in as many of the items as you can remember.</p>
+
+        <p>You will have 150 seconds to complete the recall task. You can list the items in any order. If you can’t remember all the items, don’t worry — just give your best guess.</p>
+
+        <p style="margin-top: 40px;"><em>Press "Proceed" to begin the task.</em></p>
+
+      </div>
+    </div>
+  `,
+  choices: ["Proceed"]
+};
+
+
+const all_tasks = [
+  "Draft message",
+  "Paint railing",
+  "Plug charger",
+  "Wrap present",
+  "Create playlist",
+  "Feed pet",
+  "Sort magazines",
+  "Test microphone",
+  "Separate recycling",
+  "Wipe sunglasses",
+  "Tidy drawer",
+  "Organise laundry",
+  "Take vitamins",
+  "Lock door",
+  "Reset password",
+  "Insert batteries",
+  "Replace handle",
+  "Wash backpack",
+  "Update calendar",
+  "Close oven",
+  "Empty bag",
+  "Schedule appointment",
+  "Silence alarm",
+  "Delete emails",
+  "Disconnect toaster",
+  "Fill kettle",
+  "Flip mattress"
+];
+
+// Randomly select 15 tasks
+const selected_tasks = jsPsych.randomization.sampleWithoutReplacement(all_tasks, 15);
+
+
+// Store them for later recall checking
+jsPsych.data.addProperties({ presented_tasks: selected_tasks });
+
+
+// Create the presentation trials
+const task_trials = [];
+
+selected_tasks.forEach((task, index) => {
+  // Display task
+  task_trials.push({
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+      <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <div style="font-size: 32px; color: black;">${task}</div>
+      </div>
+    `,
+    choices: "NO_KEYS",
+    trial_duration: 10000
+  });
+
+  // Inter-stimulus red dot (1 second), except after final task
+  if (index < selected_tasks.length - 1) {
+    task_trials.push({
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+          <div style="font-size: 48px; color: red;">•</div>
+        </div>
+      `,
+      choices: "NO_KEYS",
+      trial_duration: 500
+    });
+  }
+});
+
+// Push to timeline (task_trials and red_dot_start)
+
+//To-Do Recall Page
+const todo_recall_page = {
+  type: jsPsychSurveyHtmlForm,
+  preamble: `
+    <div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      <p><strong>Recall Task</strong></p>
+      <p>Please type in as many of the 15 items you just saw as you can remember. You can list them in any order.</p>
+      <p>For any items you can't remember, you can leave the corresponding box/s blank.</p>
+      <p>You have 150 seconds to complete this task.</p>
+    </div>
+  `,
+  html: `
+    ${[...Array(15)].map((_, i) =>
+      `<p>${i + 1}. <input name="todo_recall_${i + 1}" type="text" style="width: 400px;"></p>`
+    ).join("")}
+  `,
+  button_label: "Submit",
+on_load: function() {
+  // Prevent Enter key from submitting the form
+  document.querySelector('form').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // stops form submission
+    }
+  });
+
+  // Auto-submit after 100 seconds
+  setTimeout(() => {
+    const submitButton = document.querySelector('form button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
+    document.querySelector('form').requestSubmit();
+  }, 150000);
+},
+
+  on_finish: function(data) {
+  // Get participant responses
+  const Responses = Object.values(data.response).map(r => r.trim().toLowerCase());
+
+  // Get the presented tasks from earlier
+  const presented = jsPsych.data.get().values()[0].presented_tasks.map(t => t.toLowerCase());
+
+  // Count how many responses were correct
+  const num_correct = Responses.filter(r => presented.includes(r)).length;
+
+  // Save both raw responses and score
+  jsPsych.data.addProperties({
+    tasks_recall_responses: data.response,
+    tasks_recall_correct: num_correct
+  });
+}
+};
+
+    // Post-Baseline Test Screen
+const post_baseline_test = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 25vh; text-align: center;">
+    <div style="max-width: 800px; font-size: 18px; line-height: 1.6;">   
+
+<p><strong>Well done!</strong></p>
+    
+    <p>In the next phase of the task, you will be taught how to use a memory strategy known as <strong>"the Method of Loci"</strong>.</p>
+    
+        </div>
+    `,
+    choices: ["Proceed"]
+  };
+
+  // Instruction Page 1
+
+ const instruction_page_1a = { 
+type: jsPsychHtmlButtonResponse,
+stimulus: `
+    <div style="text-align: left; font-size: 18px; line-height: 1.6; max-width: 800px; margin: auto;">
+      
+         <div style="text-align: center; font-size: 36px; font-weight: 600; margin-bottom: 20px;">
+        <strong>The Method of Loci:</strong>
+      </div>
+      
+      <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>What is it?</strong>
+      </div>
+
+      
+      <p>
+        The Method of Loci is a powerful memory technique that uses vivid, visuo-spatial mental imagery to strengthen learning and recall. 
+        It works by pairing new information with well-known physical environments and the distinctive objects within them.
+      </p>
+  
+    </div>
+  `,
+  choices: ["Proceed"]
+};
+
+const instruction_page_1b = { 
+type: jsPsychHtmlButtonResponse,
+stimulus: `
+    <div style="text-align: left; font-size: 18px; line-height: 1.6; max-width: 800px; margin: auto;">
+      
+         <div style="text-align: center; font-size: 36px; font-weight: 600; margin-bottom: 20px;">
+        <strong>The Method of Loci:</strong>
+      </div>
+      
+      <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>What is it?</strong>
+      </div>
+
+      
+      <p>
+        The Method of Loci is a powerful memory technique that uses vivid, visuo-spatial mental imagery to strengthen learning and recall. 
+        It works by pairing new information with well-known physical environments and the distinctive objects within them.
+      </p>
+
+<div style="text-align: center; margin-top: 30px;">
+        <img src='img/Diagram1.png'style="width: 75%; display: block; margin: auto;"></img> 
+      </div>
+    
+      </div>
+      `,
+      choices: ["Proceed"]
+    };
+
+// Instruction Page 2
+const instruction_page_2a = { 
+type: jsPsychHtmlKeyboardResponse,
+stimulus: `
+<div style="text-align: left; font-size: 18px; line-height: 1.6; max-width: 800px; margin: auto;">
+      
+  <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>How Does it Work?</strong>
+      </div>
+
+      <p>
+        The technique involves mentally selecting a 
+        familiar physical setting, such as your home, workplace, university, or a 
+        frequently travelled route, and identifying distinctive, memorable landmarks or objects within 
+        that setting. These are known as your “loci” (singular: “locus”).
+      </p>
+
+      <p>
+        You then imagine yourself moving through this environment in a fixed, logical sequence, 
+        paying attention to each locus in order, just like following a set path or tour.
+      </p>
+
+      <p>
+        At each stop along your imagined route, you create a mental image that links a piece of new 
+        information to that specific location or object. These images work best when they 
+        are exaggerated, unusual, or even bizarre, making them more memorable than 
+        ordinary or realistic images.
+      </p>
+
+    </div>
+`,
+choices: "NO_KEYS",
+trial_duration: 7000
+};
+
+const instruction_page_2b = { 
+type: jsPsychHtmlButtonResponse,
+stimulus: `
+<div style="text-align: left; font-size: 18px; line-height: 1.6; max-width: 800px; margin: auto;">
+      
+  <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>How Does it Work?</strong>
+      </div>
+
+      <p>
+        The technique involves mentally selecting a 
+        familiar physical setting, such as your home, workplace, university, or a 
+        frequently travelled route, and identifying distinctive, memorable landmarks or objects within 
+        that setting. These are known as your “loci” (singular: “locus”).
+      </p>
+
+      <p>
+        You then imagine yourself moving through this environment in a fixed, logical sequence, 
+        paying attention to each locus in order, just like following a set path or tour.
+      </p>
+
+      <p>
+        At each stop along your imagined route, you create a mental image that links a piece of new 
+        information to that specific location or object. These images work best when they 
+        are exaggerated, unusual, or even bizarre, making them more memorable than 
+        ordinary or realistic images.
+      </p>
+
+
+    </div>
+`,
+choices: ["Proceed"]
+};
+
+// Instruction Page 3
+const instruction_page_3a = {
+type: jsPsychHtmlButtonResponse,
+stimulus: `
+    <div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      
+      <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>Key Tips for Using it Effectively</strong>
+      </div>
+
+      <ol>
+        <li>Choose a highly familiar environment you can easily visualise.</li>
+
+        <li>Plan a clear, logical route through that environment, moving from one location to the next in sequence.</li>
+
+        <li>Identify several distinctive objects or landmarks along the way—these will be your loci.</li>
+
+        <li>Create vivid mental images that link new information to each locus, imagining these connections as you move through your route in order.</li>
+
+        <li>Make your images exaggerated, strange, or surprising, as unusual associations are typically much more memorable than ordinary ones.</li>
+      </ol>
+
+    </div>
+  `,
+choices: ["Proceed"]
+};
+
+
+const instruction_page_3b = {
+type: jsPsychHtmlButtonResponse,
+stimulus: `
+    <div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      
+      <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>Key Tips for Using it Effectively</strong>
+      </div>
+
+      <ol>
+        <li>Choose a highly familiar environment you can easily visualise.</li>
+
+        <li>Plan a clear, logical route through that environment, moving from one location to the next in sequence.</li>
+
+        <li>Identify several distinctive objects or landmarks along the way—these will be your loci.</li>
+
+        <li>Create vivid mental images that link new information to each locus, imagining these connections as you move through your route in order.</li>
+
+        <li>Make your images exaggerated, strange, or surprising, as unusual associations are typically much more memorable than ordinary ones.</li>
+      </ol>
+
+      <img src='img/Diagram2.png'style="width: 75%; display: block; margin: auto;"></img> 
+      </div>
+    </div>
+  `,
+choices: ["Proceed"]
+};
+
+// Practice Example Page 1
+const instruction_page_4a = {
+type: jsPsychHtmlKeyboardResponse,
+stimulus: `
+<div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      
+    <div style="text-align: center; font-size: 36px; font-weight: 600; margin-bottom: 20px;">
+        Applying the Method of Loci:
+      </div>
+
+    <p>Let's practice using the Method of Loci!</p>
+
+   <div style=" font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>Practice Question #1</strong>
+      </div>
+
+    <p>How might you remember the word <strong>“telescope”</strong> if your route starts at the <strong>front door</strong> of your home?</p>
+
+    <p><em>Take about 10 seconds now to create your own mental image.</em></p>
+    
+    </div>
+`,
+choices: "NO_KEYS",
+trial_duration: 15000
+    };
+
+const instruction_page_4b = {
+type: jsPsychHtmlButtonResponse,
+stimulus: `
+<div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      
+    <div style="text-align: center; font-size: 36px; font-weight: 600; margin-bottom: 20px;">
+        Applying the Method of Loci:
+      </div>
+
+    <p>Let's practice using the Method of Loci!</p>
+
+   <div style=" font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>Practice Question #1</strong>
+      </div>
+
+    <p>How might you remember the word <strong>“telescope”</strong> if your route starts at the <strong>front door</strong> of your home?</p>
+
+    <p><em>Take about 10 seconds now to create your own mental image.</em></p>
+    
+    </div>
+`,
+choices: ["Proceed"]
+    };
+
+const instruction_page_4c = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+<div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      
+    <div style="text-align: center; font-size: 36px; font-weight: 600; margin-bottom: 20px;">
+        Applying the Method of Loci:
+      </div>
+
+    <p>Let's practice using the Method of Loci!</p>
+
+   <div style=" font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>Practice Question #1</strong>
+      </div>
+
+    <p>How might you remember the word <strong>“telescope”</strong> if your route starts at the <strong>front door</strong> of your home?</p>
+
+    <p><em>Take about 10 seconds now to create your own mental image.</em></p>
+
+<div style= font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>Example Association</strong>
+      </div>
+
+      <p>
+        You might imagine approaching your front door, only to find a small telescope mounted 
+        where the peephole should be. Curious, you lean in and look through it, expecting to see 
+        inside your house, but instead, you see a tiny, animated solar system spinning behind 
+        the door.
+      </p>
+
+      <p>
+        This strange and unexpected image helps make the word “telescope” memorable, 
+        while anchoring it to the first stop on your sequential memory route.
+      </p>
+
+      <p><em>
+        Let’s try another example. This time, memorising a task that you intend to 
+        complete later.
+      </em></p>
+
+    </div>
+`,
+choices: ["Proceed"]
+};
+
+// Practice Example Page 2
+const instruction_page_5a = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `
+<div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+
+ <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>Practice Question #2</strong>
+      </div>
+
+      <p>
+        How might you create a memorable mental image to associate the task <strong>“reset router”</strong> 
+        with a familiar object in your <strong>kitchen</strong>?
+      </p>
+    
+      <p><em>
+        Take about 10-20 seconds now to create your own mental image.    
+      </em></p>
+
+    </div>
+`,
+  choices: "NO_KEYS",
+  trial_duration: 15000
+}; 
+
+const instruction_page_5b = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+<div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+
+ <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>Practice Question #2</strong>
+      </div>
+
+      <p>
+        How might you create a memorable mental image to associate the task <strong>“reset router”</strong> 
+        with a familiar object in your <strong>kitchen</strong>?
+      </p>
+    
+      <p><em>
+        Take about 10-20 seconds now to create your own mental image.    
+      </em></p>
+
+    </div>
+`,
+  choices: ["Proceed"]
+};
+
+const instruction_page_5c =  {
+type: jsPsychHtmlButtonResponse,
+stimulus: `
+    <div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+
+       <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>Practice Question #2</strong>
+      </div>
+
+      <p>
+        How might you create a memorable mental image to associate the task <strong>“reset router”</strong> 
+        with a familiar object in your <strong>kitchen</strong>?
+      </p>
+    
+      <p><em>
+        Take about 10-20 seconds now to create your own mental image.    
+      </em></p>
+
+      
+      <div style= font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+
+      <strong>Example Association</strong>
+      </div>
+
+      <p>
+        You might picture yourself walking into your kitchen and noticing that your toaster has 
+       transformed into a glowing internet router.
+      </p>
+
+      <p>
+        The toaster’s slots are flashing with colourful Wi-Fi symbol lights, and instead of toast popping out, it’s 
+        shooting out glowing Wi-Fi signals.
+      </p>
+
+      <p>
+        You reach out and push the toaster’s lever down, imagining that this 
+        "resets" the router. This momentarily causes the toaster to shut down, before
+        restarting, flashing even brighter lights, and shooting out Wi-Fi signals that swirl through the air.
+      </p>
+
+      <p><em>
+        Notice how the image is not only tied to a familiar object (the toaster) but also includes a 
+        distinctive and exaggerated action that represents the task itself. Making both the locus and 
+        the action vivid and unusual helps strengthen recall.    
+      </em></p>
+
+      <div style="text-align: left; margin-top: 60px;">
+        <em>Next, you will create and learn to utilise your own memory palace structure.</em>
+      </div>
+      
+    </div>
+  `,
+  choices: ["Proceed"]
+};
+
+// Memory Palace Creation 1
+
+const step_1 = {
+type: jsPsychHtmlButtonResponse,
+stimulus: `
+<div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      
+    <div style="text-align: center; font-size: 36px; font-weight: 600; margin-bottom: 20px;">
+        <strong>Creating Your Loci Memory Route</strong>
+      </div>
+
+      <p> 
+         In this part of the task, you will build a personalised memory structure using the Method 
+        of Loci, before using it later to memorise a list of new information.
+      </p>
+
+      <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>Step 1: Choose a Familiar Setting</strong>
+      </div>
+
+      <!-- Bullet points with spacing -->
+      <ul style="margin-left: 20px;">
+        <li style="margin-bottom: 16px;">Think of a physical setting you know extremely well.</li>
+        <li style="margin-bottom: 16px;">
+          Choose somewhere you can easily visualise moving through in a set order, 
+          noticing objects or landmarks along the way.
+        </li>
+        <li style="margin-bottom: 16px;">Take a moment to choose your setting now.</li>
+      </ul>
+      
+    </div>
+  `,
+  choices: ["Proceed"]
+};
+
+
+// Memory Palace Creation 2
+
+
+const step_2a = {
+type: jsPsychHtmlKeyboardResponse,
+stimulus: `
+<div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+  
+  <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+    <strong>Step 2: Plan a Clear Route</strong>
+  </div>
+
+  <ul style="margin-left: 20px;">
+    <li style="margin-bottom: 16px;">
+      Imagine walking through this setting from a clear starting point 
+      (for example, entering through the front door of your home).
+    </li>
+
+    <li style="margin-bottom: 16px;">
+      Visualise moving step by step through the space, noticing around 15 distinctive objects or 
+      locations along the way.
+
+      <ul style="margin-left: 20px; list-style-type: circle;">
+        <li>Example items could include a front door, hallway mirror, couch, fridge, desk, etc.</li>
+      </ul>
+    </li>
+
+    <li style="margin-bottom: 16px;">
+      It is essential to structure your memory route as a clear, sequential path through the environment, rather than a disconnected collection of items scattered throughout the space. 
+      
+      <ul style="margin-left: 20px; list-style-type: circle;">
+        <li> The more orderly and logical the route, the easier it will be to recall each locus as you learn and recall information. </li>
+      </ul>
+    </li>
+
+      <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px;">
+        <img src="img/Diagram3.png" style="width: 100%;" />
+        
+      </div>
+
+    <li style="margin-bottom: 16px; margin-top: 40px;">
+      <em>Take approximately 2 minutes to do this now. Feel free to close your eyes if you prefer.</em>
+      </li>
+  </ul>
+
+
+</div>
+`,
+  choices: "NO_KEYS",
+  trial_duration: 110000
+  };
+
+const step_2b = {
+type: jsPsychHtmlButtonResponse,
+stimulus: `
+<div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+  
+  <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+    <strong>Step 2: Plan a Clear Route</strong>
+  </div>
+
+  <ul style="margin-left: 20px;">
+    <li style="margin-bottom: 16px;">
+      Imagine walking through this setting from a clear starting point 
+      (for example, entering through the front door of your home).
+    </li>
+
+    <li style="margin-bottom: 16px;">
+      Visualise moving step by step through the space, noticing around 15 distinctive objects or 
+      locations along the way.
+
+      <ul style="margin-left: 20px; list-style-type: circle;">
+        <li>Example items could include a front door, hallway mirror, couch, fridge, desk, etc.</li>
+      </ul>
+    </li>
+
+    <li style="margin-bottom: 16px;">
+      It is essential to structure your memory route as a clear, sequential path through the environment, rather than a disconnected collection of items scattered throughout the space. 
+      
+      <ul style="margin-left: 20px; list-style-type: circle;">
+        <li> The more orderly and logical the route, the easier it will be to recall each locus as you learn and recall information. </li>
+      </ul>
+    </li>
+
+      <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px;">
+        <img src="img/Diagram3.png" style="width: 100%;" />
+        
+      </div>
+
+    <li style="margin-bottom: 16px; margin-top: 40px;">
+      <em>Take approximately 2 minutes to do this now. Feel free to close your eyes if you prefer.</em>
+      </li>
+  </ul>
+
+</div>
+`,
+  choices: ["Proceed"]
+};
+
+
+const memoryLociForm = {
+  type: jsPsychSurveyHtmlForm,
+  preamble: `
+    <div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      
+      <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>Step 3: Write Down 15 Loci:</strong>
+      </div>
+
+      <p>Now that you've visualised your route, please write down the <strong>15 specific locations or objects</strong> (your loci) that you'll use to anchor new information.</p>
+      <p><strong>Important:</strong> These should follow the order in which you would naturally move through the setting.</p>
+      <p>Example: front door, hallway mirror, couch, coffee table, television...</p>
+    </div>
+  `,
+  html: `
+    ${[...Array(15)].map((_, i) =>
+      `<p>${i + 1}. <input name="locus${i + 1}" type="text" style="width: 500px;" required></p>`
+    ).join("")}
+  `,
+  button_label: "Save and Continue",
+  on_finish: function(data) {
+    jsPsych.data.addProperties({ memory_loci: data.response });
+  }
+};
+
+
+
+const step4_rehearsala = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `
+    <div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      
+      <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>Step 4: Mentally Rehearse Your Route</strong>
+      </div>
+      
+      <p>Close your eyes and mentally walk through your chosen route, step by step, identifying each of the 15 loci in order from memory.</p>
+      
+    </div>
+  `,
+  choices: "NO_KEYS",
+  trial_duration: 40000
+};
+
+const step4_rehearsalb = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      
+      <div style="font-size: 22px; font-weight: 600; margin-bottom: 12px;">
+      <strong>Step 4: Mentally Rehearse Your Route</strong>
+      </div>
+      
+      <p>Close your eyes and mentally walk through your chosen route, step by step, identifying each of the 15 loci in order from memory.</p>
+      <p><em>Once you feel confident, press "Proceed" to continue.</em></p>
+    </div>
+  `,
+  choices: ["Proceed"]
+};
+
+
+//Final task warning
+const final_taskwarning = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+<div style="max-width: 800px; margin: auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      
+    <div style="text-align: center; font-size: 36px; font-weight: 600; margin-bottom: 20px;">
+    <strong>Practice Test</strong>
+    </div>
+<p>You will next be presented with 15 items to memorise, shown one at a time.</p>
+      
+      <p>You should use the loci memory structure you just created to help you remember items by mentally placing them sequentially along your route.</p>
+      
+    <p> This phase is solely intended for practice, so don't worry if it feels challenging, just give it your best go.</p>
+
+      <ul style="margin-left: 20px; margin-top: 20px;">
+        <li style="margin-bottom: 16px;">
+          Eight of the items you'll see will be individual nouns (e.g., objects or things).
+        </li>
+        <li style="margin-bottom: 16px;">
+          The other seven items will be everyday tasks, like the “reset router” example you saw earlier.
+        </li>
+      </ul>
+      
+      <p>Each noun will appear on the screen for 6.5 seconds, and each task will appear for 10 seconds.</p>
+      
+      <p>Once all items have been presented, you'll be directed to a page where you'll recall the list.</p>
+
+      <p style="text-align: center; margin-top: 60px;">
+        <em>Press "Proceed" to begin the task.</em>
+      </p>
+      
+    </div>
+  `,
+  choices: ["Proceed"]
+};
+
+
+// ➤ Stimuli: 15 items
+      const study_items = [
+  "Compass",
+  "Whistle",
+  "Cactus",
+  "Anchor",
+  "Thermometer",
+  "Salami",
+  "Lantern",
+  "Reaction",
+  "Dust pantry",
+  "Organise folders",
+  "Defrost freezer",
+  "Change batteries",
+  "Descale kettle",
+  "Replace medicine",
+  "Hang Artwork"
+];
+
+// Split into nouns and tasks (first 8 are nouns, next 7 are tasks)
+const noun_items = study_items.slice(0, 8);
+const task_items = study_items.slice(8, 15);
+
+// Interleave trials
+const study_trials = [];
+
+const max_pairs = Math.max(noun_items.length, task_items.length);
+
+for (let i = 0; i < max_pairs; i++) {
+  // If noun exists at this index, add it with 6.5s
+  if (i < noun_items.length) {
+    study_trials.push({
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+          <div style="font-size: 32px; color: black;">${noun_items[i]}</div>
+        </div>
+      `,
+      choices: "NO_KEYS",
+      trial_duration: 6500
+    });
+
+    // Red dot after noun if more items remain
+    if (i < task_items.length || i < noun_items.length - 1) {
+      study_trials.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `
+          <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <div style="font-size: 48px; color: red;">•</div>
+          </div>
+        `,
+        choices: "NO_KEYS",
+        trial_duration: 500
+      });
+    }
+  }
+
+  // If task exists at this index, add it with 10s
+  if (i < task_items.length) {
+    study_trials.push({
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+          <div style="font-size: 32px; color: black;">${task_items[i]}</div>
+        </div>
+      `,
+      choices: "NO_KEYS",
+      trial_duration: 10000
+    });
+
+    // Red dot after task if more items remain
+    if (i < noun_items.length - 1 || i < task_items.length - 1) {
+      study_trials.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `
+          <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <div style="font-size: 48px; color: red;">•</div>
+          </div>
+        `,
+        choices: "NO_KEYS",
+        trial_duration: 500
+      });
+    }
+  }
+}
+
+  // Recall trial
+  const practice_recall_trial = {
+    type: jsPsychSurveyHtmlForm,
+    preamble: `<p>Please type the 15 items you remember from the previous task. Enter one item per box.</p>
+    <p>For any items you can't remember, you can leave the corresponding box/s blank.</p>`,
+
+  html: `
+    ${[...Array(15)].map((_, i) =>
+      `<p>${i + 1}. <input name="item${i + 1}" type="text" style="width: 400px;" ></p>`
+    ).join("")}
+  `,
+  button_label: "Submit",
+   on_load: function() {
+    // Prevent Enter key from submitting the form
+    document.querySelector('form').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault(); // stops form submission
+      }
+    });
+  }
+};
+
+ const email_entry_page = {
+   type: jsPsychSurveyHtmlForm,
+  preamble: `
+    
+  <div style="max-width: 800px; margin: 80px auto 0 auto; font-size: 18px; line-height: 1.8; text-align: left;">
+      <p><strong>You have completed the first of two parts of this online task. Well done!</strong></p>
+      
+      <p>The second task will become available to you in 24 hours and you will have 72 hours to complete it after it becomes available. 
+        It will likely take 15–30 minutes.</p>
+      
+        <p><strong>Please note:</strong> In order to be granted course credit, the second task must be completed within the allotted period. 
+        You will not be able to complete the task and will not be awarded course credit if you do not complete it within this timeframe.</p>
+      <p>Thank you for your participation! See you in the next session.</p>
+      <p><em>Please enter and confirm your email address to receive the link to Part 2.</em></p>
+    </div>
+  `,
+  html: `
+    <p>Email: <input name="email1" type="email" style="width: 300px;" required></p>
+    <p>Confirm Email: <input name="email2" type="email" style="width: 300px;" required></p>
+  `,
+  button_label: "Submit",
+  on_finish: function(data) {
+    const email1 = data.response.email1.trim();
+    const email2 = data.response.email2.trim();
+    jsPsych.data.addProperties({ email1, email2 }); // Always store for validation
+  }
+};
+
+const email_loop = {
+  timeline: [email_entry_page],
+  loop_function: function(data) {
+    const last_response = data.values().slice(-1)[0].response;
+    if (last_response.email1.trim() !== last_response.email2.trim()) {
+      alert("The email addresses you entered do not match. Please try again.");
+      return true; // repeat
+    } else {
+      jsPsych.data.addProperties({ participant_email: last_response.email1.trim() });
+      return false; // continue to next page
+    }
+  }
+};
+
+const download_data_screen = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="text-align: center; font-size: 18px;">
+      <p>Thank you for completing this pilot testing session.</p>
+      
+      <p>Please download your performance data by clicking the button below.</p>
+
+      <p>Once you've done this, you can close the tab.</p>
+    </div>
+  `,
+  choices: ['Download Data'],
+  on_finish: function() {
+    jsPsych.data.get().localSave('csv', 'test_trial_data.csv');
+  }
+};
+
+
+
+  const group = 'Test'; // Change this to 'NPT/MoL/TD', 'NPT/MoL/N', 'NPT/C/TD', 'NPT/C/N', or 'PT/MoL' as needed
+
+  
+  jsPsych.data.addProperties({
+  group: group
+  });
+
+  console.log(
+    "Assigned group:", group,
+  );
+
+
+
+if (group === 'Test') {
+
+timeline.push(welcome_pageb);
+timeline.push(word_presentation_info_pageb);
+timeline.push(red_dot_start);
+timeline.push(Distractor1);
+timeline.push(recall_words_trial);
+timeline.push(well_done_page);
+timeline.push(ToDo_presentation_info_pageb);
+timeline.push(red_dot_start);
+timeline.push(Distractor2);
+timeline.push(todo_recall_page);
+timeline.push(post_baseline_test);
+timeline.push(instruction_page_1b);
+timeline.push(instruction_page_2b);
+timeline.push(instruction_page_3b);
+timeline.push(instruction_page_4b);
+timeline.push(instruction_page_4c);
+timeline.push(instruction_page_5b);
+timeline.push(instruction_page_5c);
+timeline.push(step_1);
+timeline.push(step_2b);
+timeline.push(memoryLociForm);
+timeline.push(step4_rehearsalb);
+timeline.push(final_taskwarning);
+timeline.push(red_dot_start);
+timeline.push(practice_recall_trial);
+timeline.push(email_loop);
+};
+
+//PT/MoL/TD
+if (group === 'NPT/MoL/TD') {
+timeline.push(welcome_pagea);
+timeline.push(welcome_pageb);
+timeline.push(ToDo_presentation_info_pagea);
+timeline.push(ToDo_presentation_info_pageb);
+timeline.push(red_dot_start);
+timeline.push(...task_trials);
+timeline.push(Distractor1);
+timeline.push(todo_recall_page);
+timeline.push(well_done_page);
+timeline.push(word_presentation_info_pagea);
+timeline.push(word_presentation_info_pageb);
+timeline.push(red_dot_start);
+timeline.push(...word_trials);
+timeline.push(Distractor2);
+timeline.push(recall_words_trial);
+timeline.push(post_baseline_test);
+timeline.push(instruction_page_1a);
+timeline.push(instruction_page_1b);
+timeline.push(instruction_page_2a);
+timeline.push(instruction_page_2b);
+timeline.push(instruction_page_3a);
+timeline.push(instruction_page_3b);
+timeline.push(instruction_page_4a);
+timeline.push(instruction_page_4b);
+timeline.push(instruction_page_4c);
+timeline.push(instruction_page_5a); 
+timeline.push(instruction_page_5b);
+timeline.push(instruction_page_5c);
+timeline.push(step_1);
+timeline.push(step_2a);
+timeline.push(step_2b);
+timeline.push(memoryLociForm);
+timeline.push(step4_rehearsala);
+timeline.push(step4_rehearsalb);
+timeline.push(final_taskwarning);
+timeline.push(red_dot_start);
+timeline.push(...study_trials);
+timeline.push(practice_recall_trial);
+timeline.push(email_loop);
+};
+
+if (group === 'NPT/MoL/N') {
+timeline.push(welcome_pagea);
+timeline.push(welcome_pageb);
+timeline.push(word_presentation_info_pagea);
+timeline.push(word_presentation_info_pageb);
+timeline.push(red_dot_start);
+timeline.push(...word_trials);
+timeline.push(Distractor1);
+timeline.push(recall_words_trial);
+timeline.push(well_done_page);
+timeline.push(ToDo_presentation_info_pagea);
+timeline.push(ToDo_presentation_info_pageb);
+timeline.push(red_dot_start);
+timeline.push(...task_trials);
+timeline.push(Distractor2);
+timeline.push(todo_recall_page);
+timeline.push(post_baseline_test);
+timeline.push(instruction_page_1a);
+timeline.push(instruction_page_1b);
+timeline.push(instruction_page_2a);
+timeline.push(instruction_page_2b);
+timeline.push(instruction_page_3a);
+timeline.push(instruction_page_3b);
+timeline.push(instruction_page_4a);
+timeline.push(instruction_page_4b);
+timeline.push(instruction_page_4c);
+timeline.push(instruction_page_5a); 
+timeline.push(instruction_page_5b);
+timeline.push(instruction_page_5c);
+timeline.push(step_1);
+timeline.push(step_2a);
+timeline.push(step_2b);
+timeline.push(memoryLociForm);
+timeline.push(step4_rehearsala);
+timeline.push(step4_rehearsalb);
+timeline.push(final_taskwarning);
+timeline.push(red_dot_start);
+timeline.push(...study_trials);
+timeline.push(practice_recall_trial);
+timeline.push(email_loop);
+};
+
+if (group === 'NPT/C/TD') {
+timeline.push(welcome_pagea);
+timeline.push(welcome_pageb);
+timeline.push(ToDo_presentation_info_pagea);
+timeline.push(ToDo_presentation_info_pageb);
+timeline.push(red_dot_start);
+timeline.push(...task_trials);
+timeline.push(Distractor1);
+timeline.push(todo_recall_page);
+timeline.push(well_done_page);
+timeline.push(word_presentation_info_pagea);
+timeline.push(word_presentation_info_pageb);
+timeline.push(red_dot_start);
+timeline.push(...word_trials);
+timeline.push(Distractor2);
+timeline.push(recall_words_trial);
+timeline.push(email_loop);
+};
+
+if (group === 'NPT/C/N') {
+timeline.push(welcome_pagea);
+timeline.push(welcome_pageb);
+timeline.push(word_presentation_info_pagea);
+timeline.push(word_presentation_info_pageb);
+timeline.push(red_dot_start);
+timeline.push(...word_trials);
+timeline.push(Distractor1);
+timeline.push(recall_words_trial);
+timeline.push(ToDo_presentation_info_pagea);
+timeline.push(ToDo_presentation_info_pageb);
+timeline.push(red_dot_start);
+timeline.push(...task_trials);
+timeline.push(Distractor2);
+timeline.push(todo_recall_page);
+timeline.push(well_done_page);
+timeline.push(email_loop);
+};
+
+if (group === 'PT/MoL') {
+timeline.push(welcome_pagea);
+timeline.push(welcome_pageb);
+timeline.push(word_presentation_info_pagea);
+timeline.push(word_presentation_info_pageb);
+timeline.push(red_dot_start);
+timeline.push(...word_trials);
+timeline.push(Distractor1);
+timeline.push(recall_words_trial);
+timeline.push(post_baseline_test);
+timeline.push(instruction_page_1a);
+timeline.push(instruction_page_1b);
+timeline.push(instruction_page_2a);
+timeline.push(instruction_page_2b);
+timeline.push(instruction_page_3a);
+timeline.push(instruction_page_3b);
+timeline.push(instruction_page_4a);
+timeline.push(instruction_page_4b);
+timeline.push(instruction_page_4c);
+timeline.push(instruction_page_5a); 
+timeline.push(instruction_page_5b);
+timeline.push(instruction_page_5c);
+timeline.push(step_1);
+timeline.push(step_2a);
+timeline.push(step_2b);
+timeline.push(memoryLociForm);
+timeline.push(step4_rehearsala);
+timeline.push(step4_rehearsalb);
+timeline.push(final_taskwarning);
+timeline.push(red_dot_start);
+timeline.push(...study_trials);
+timeline.push(practice_recall_trial);
+timeline.push(email_loop);
+};
+
+if (group === 'PT/C') {
+timeline.push(welcome_pagea);
+timeline.push(welcome_pageb);
+timeline.push(word_presentation_info_pagea);
+timeline.push(word_presentation_info_pageb);
+timeline.push(red_dot_start);
+timeline.push(...word_trials);
+timeline.push(Distractor1);
+timeline.push(recall_words_trial);
+timeline.push(email_loop);
+};
+
+
+// Start the experiment
+  
+  jsPsych.run(timeline);
+
+  </script>
+</html>
