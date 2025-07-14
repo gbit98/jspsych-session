@@ -596,7 +596,9 @@ for (let i = 0; i < max_pairs; i++) {
   // Recall trial
   const practice_recall_trial1 = {
     type: jsPsychSurveyHtmlForm,
-    preamble: "<p>Please type the 15 items you remember from the previous task. Enter one item per box.</p>",
+    preamble:  `<p>Please type as many of the 15 items you can remember from the previous task.</p>
+    <p>For any items you can't remember, you can leave the corresponding box/s blank.</p>`,
+
   html: `
     ${[...Array(15)].map((_, i) =>
       `<p>${i + 1}. <input name="item${i + 1}" type="text" style="width: 400px;"></p>`
